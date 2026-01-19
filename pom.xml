@@ -5,13 +5,13 @@
          http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>com.example</groupId>
-    <artifactId>sobrecarga-y-sobreescritura</artifactId>
+    <groupId>com.speedfast</groupId>
+    <artifactId>speedfast</artifactId>
     <version>1.0-SNAPSHOT</version>
     <packaging>jar</packaging>
 
-    <name>Sobrecarga y Sobreescritura</name>
-    <description>Proyecto básico de Maven para clase de programación</description>
+    <name>SpeedFast</name>
+    <description>Proyecto Maven para la asignatura de Programación orientada a objetos II</description>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>

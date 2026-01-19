@@ -1,11 +1,11 @@
-# Proyecto Maven - Sobrecarga y Sobreescritura
+# Proyecto Maven - SpeedFast
 
-Este es un proyecto Maven básico para una clase de programación de nivel inicial que demuestra los conceptos de **sobrecarga** (method overloading) y **sobreescritura** (method overriding) en Java.
+Este es un proyecto Maven para la asignatura de Programación Orientada a Objetos II que demuestra conceptos fundamentales del desarrollo con Java.
 
 ## Estructura del Proyecto
 
 ```
-sobrecarga-y-sobreescritura/
+speedfast/
 ├── pom.xml                          # Archivo de configuración de Maven
 ├── src/
 │   ├── main/
@@ -75,6 +75,7 @@ sobrecarga-y-sobreescritura/
 ## Conceptos Aprendidos
 
 Este proyecto demuestra:
-- **Herencia**: Las clases `PedidoComida`, `PedidoEncomienda` y `PedidoExpress` extienden `Pedido`
+- **Herencia**: Las clases `PedidoComida`, `PedidoEncomienda` y `PedidoExpress` extienden la clase abstracta `Pedido`
 - **Sobreescritura (Overriding)**: Los métodos pueden ser sobrescritos en las subclases
 - **Sobrecarga (Overloading)**: Los métodos pueden tener múltiples versiones con diferentes parámetros
+- **Métodos abstractos**: Metodos que son declarados dentro de una clase abstracta y son implementados en subclases concretas.

@@ -1,21 +1,31 @@
 package com.speedfast;
 
-public class Pedido {
+public abstract class Pedido {
 
     private String idPedido;
     private String direccionEntrega;
-    private String tipoPedido;
+    private Double distanciaKm;
     private String origen;
 
-    public Pedido(String idPedido, String direccionEntrega, String tipoPedido, String origen) {
+    public Pedido(String idPedido, String direccionEntrega, Double distanciaKm, String origen) {
         this.idPedido = idPedido;
         this.direccionEntrega = direccionEntrega;
-        this.tipoPedido = tipoPedido;
+        this.distanciaKm = distanciaKm;
         this.origen = origen;
     }
 
+    public abstract Integer calculartTiempoEntrega();
+
+    public void mostrarResumen() {
+        System.out.println("Resumen del pedido:");
+        System.out.println("ID del pedido: " + idPedido);
+        System.out.println("Dirección de entrega: " + direccionEntrega);
+        System.out.println("Distancia: " + distanciaKm + " km");
+        System.out.println("Origen: " + origen);
+    }
+
     public void asignarRepartidor(String nombreRepartidor) {
-        System.out.println("Asignando repartidor. Nombre: " + nombreRepartidor + ". ID de Pedido: " + idPedido);
+        System.out.println("Asignando repartidor... Nombre: " + nombreRepartidor + ".");
     }
 
     public String getIdPedido() {
@@ -33,12 +43,12 @@ public class Pedido {
         this.direccionEntrega = direccionEntrega;
     }
 
-    public String getTipoPedido() {
-        return tipoPedido;
+    public Double getDistanciaKm() {
+        return distanciaKm;
     }
 
-    public void setTipoPedido(String tipoPedido) {
-        this.tipoPedido = tipoPedido;
+    public void setDistanciaKm(Double distanciaKm) {
+        this.distanciaKm = distanciaKm;
     }
 
     public String getOrigen() {
