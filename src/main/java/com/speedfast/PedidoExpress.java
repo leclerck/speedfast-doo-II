@@ -4,21 +4,19 @@ public class PedidoExpress extends Pedido {
 
     private String prioridad;
 
-    public PedidoExpress(String idPedido, String direccionEntrega, Double distanciaKm, String origen, String prioridad) {
-        super(idPedido, direccionEntrega, distanciaKm, origen);
+    public PedidoExpress(String idPedido, String direccionEntrega, Double distanciaKm, String prioridad) {
+        super(idPedido, direccionEntrega, distanciaKm, "Express");
         this.prioridad = prioridad;
-        System.out.println("--------------------------------");
-        System.out.println("Pedido express registrado: #" + idPedido);
     }
 
     @Override
-    public Integer calculartTiempoEntrega() {
+    public Integer calcularTiempoEntrega() {
         return this.getDistanciaKm() > 5 ? 15 : 10;
     }
 
     @Override
     public void asignarRepartidor(String nombreRepartidor) {
-        System.out.println("Repartidor más cercano con disponibilidad inmediata encontrado.");
+        System.out.println("\nBuscando repartidor más cercano con disponibilidad inmediata... OK");
         super.asignarRepartidor(nombreRepartidor);
         System.out.println("Nivel de prioridad del pedido: " + prioridad);
     }

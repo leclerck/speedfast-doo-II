@@ -4,15 +4,13 @@ public class PedidoEncomienda extends Pedido {
 
     private Double peso;
 
-    public PedidoEncomienda(String idPedido, String direccionEntrega, Double distanciaKm, String origen, Double peso) {
-        super(idPedido, direccionEntrega, distanciaKm, origen);
+    public PedidoEncomienda(String idPedido, String direccionEntrega, Double distanciaKm, Double peso) {
+        super(idPedido, direccionEntrega, distanciaKm, "Encomienda");
         this.peso = peso;
-        System.out.println("--------------------------------");
-        System.out.println("Pedido de encomienda registrado: #" + idPedido);
     }
     @Override
-    public Integer calculartTiempoEntrega() {
-        return (int) Math.ceil(20 + (this.getDistanciaKm() * 1.5));
+    public Integer calcularTiempoEntrega() {
+        return (int) Math.round(20 + (this.getDistanciaKm() * 1.5));
     }
     @Override
     public void asignarRepartidor(String nombreRepartidor) {
