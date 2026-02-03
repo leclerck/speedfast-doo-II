@@ -1,5 +1,5 @@
 package com.speedfast;
 
 public interface Cancelable {
-    void cancelar();
+    void cancelar(Pedido pedido);
 }

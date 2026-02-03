@@ -9,14 +9,18 @@ public class PedidoComida extends Pedido {
         this.restaurante = restaurante;
     }
 
+    public PedidoComida(String idPedido, String direccionEntrega, String restaurante) {  
+        super(idPedido, direccionEntrega, "Comida");
+        this.restaurante = restaurante;
+    }
+
     @Override
     public Integer calcularTiempoEntrega() {
         return (int) Math.round(15 + (this.getDistanciaKm() * 2));
     }
 
     @Override
-    public void asignarRepartidor(String nombreRepartidor) {
-        super.asignarRepartidor(nombreRepartidor);
+    public void imprimirDetallesAsignacion() {
         System.out.println("Verificando mochila térmica... OK");
         System.out.println("Restaurante: " + restaurante);
     }

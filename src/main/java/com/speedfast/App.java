@@ -1,37 +1,60 @@
 package com.speedfast;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
 
 public class App {
     public static void main(String[] args) {
         System.out.println("Bienvenido a SpeedFast!");
         System.out.println("Realizamos envíos de comida, encomiendas y pedidos express.");
 
-        List<Pedido> pedidos = new ArrayList<>();
+        GestorPedidos gestorPedidos = new GestorPedidos();
+        Repartidor repartidorGG = new Repartidor("Gabriela González", gestorPedidos);
+        Repartidor repartidorCL = new Repartidor("Carlos López", gestorPedidos);
+        Repartidor repartidorJP = new Repartidor("Juan Pérez", gestorPedidos);
 
-        PedidoComida pedidoComida = new PedidoComida("1234567890", "Antonio Varas #666", 13.2, "McDonald's");
-        pedidos.add(pedidoComida);
-        pedidoComida.asignarRepartidor();
-        pedidoComida.despachar();
+        PedidoComida pedidoComidaAV = new PedidoComida("1234567890", "Antonio Varas #666", "McDonald's");
+        gestorPedidos.agregarPedido(pedidoComidaAV);
+        gestorPedidos.asignarRepartidor(pedidoComidaAV, repartidorGG);
 
-        PedidoEncomienda pedidoEncomienda = new PedidoEncomienda("1234567891", "Serrano #1105", 3.4, 10.0);
-        pedidos.add(pedidoEncomienda);
-        pedidoEncomienda.asignarRepartidor("Gabriela González");
-        pedidoEncomienda.cancelar();
+        PedidoEncomienda pedidoEncomiendaSerrano = new PedidoEncomienda("1234567891", "Serrano #1105", 10.0);
+        gestorPedidos.agregarPedido(pedidoEncomiendaSerrano);
+        gestorPedidos.asignarRepartidor(pedidoEncomiendaSerrano, repartidorJP);
 
-        PedidoExpress pedidoExpress = new PedidoExpress("1234567892", "Froilán Roa #7107", 6.7, "Alta");
-        pedidos.add(pedidoExpress);
-        pedidoExpress.asignarRepartidor("Carlos López");
+        PedidoExpress pedidoExpressFroilan = new PedidoExpress("1234567892", "Froilán Roa #7107", "Alta");
+        gestorPedidos.agregarPedido(pedidoExpressFroilan);
+        gestorPedidos.asignarRepartidor(pedidoExpressFroilan, repartidorCL);
 
-        PedidoEncomienda pedidoEncomiendaCreado = new PedidoEncomienda("1234567893", "Padre Alonso de Ovalle #1586", 2.0, 1.0);
-        pedidos.add(pedidoEncomiendaCreado);
+        PedidoEncomienda pedidoEncomiendaPAO = new PedidoEncomienda("1234567893", "Padre Alonso de Ovalle #1586",1.0);
+        gestorPedidos.agregarPedido(pedidoEncomiendaPAO);
+        gestorPedidos.asignarRepartidor(pedidoEncomiendaPAO, repartidorCL);
 
-        System.out.println("--------------------------------");
-        System.out.println("Estado de pedidos:");
-        for (Pedido pedido : pedidos) {
-            pedido.verHistorial();
+        PedidoExpress pedidoExpressPAO = new PedidoExpress("1234567894", "Padre Alonso de Ovalle #1586","Alta");
+        gestorPedidos.agregarPedido(pedidoExpressPAO);
+        gestorPedidos.asignarRepartidor(pedidoExpressPAO, repartidorJP);
+
+        PedidoComida pedidoComidaPAO = new PedidoComida("1234567895", "Padre Alonso de Ovalle #1586", "Tarragona");
+        gestorPedidos.agregarPedido(pedidoComidaPAO);
+        gestorPedidos.asignarRepartidor(pedidoComidaPAO, repartidorGG);
+
+        ExecutorService executor = Executors.newFixedThreadPool(3);
+        executor.submit(repartidorGG);
+        executor.submit(repartidorJP);
+        executor.submit(repartidorCL);
+        
+        executor.shutdown();
+        try {
+            if (!executor.awaitTermination(60, TimeUnit.SECONDS)) {
+                System.err.println("Hubo un retraso en los repartos del día.");
+            }
+        } catch (InterruptedException e) {
+            executor.shutdownNow();
         }
+
+        System.out.println("Cierre de operaciones de SpeedFast. Hasta mañana!");
+
+        gestorPedidos.verHistorial();
 
     }
 }

@@ -8,13 +8,18 @@ public class PedidoEncomienda extends Pedido {
         super(idPedido, direccionEntrega, distanciaKm, "Encomienda");
         this.peso = peso;
     }
+
+    public PedidoEncomienda(String idPedido, String direccionEntrega, Double peso) {
+        super(idPedido, direccionEntrega, "Encomienda");
+        this.peso = peso;
+    }
+
     @Override
     public Integer calcularTiempoEntrega() {
         return (int) Math.round(20 + (this.getDistanciaKm() * 1.5));
     }
     @Override
-    public void asignarRepartidor(String nombreRepartidor) {
-        super.asignarRepartidor(nombreRepartidor);
+    public void imprimirDetallesAsignacion() {
         System.out.println("Verificando peso y embalaje... OK");
         System.out.println("Peso del pedido: " + peso + " kg");
     }

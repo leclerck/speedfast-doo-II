@@ -4,8 +4,8 @@ public class PedidoExpress extends Pedido {
 
     private String prioridad;
 
-    public PedidoExpress(String idPedido, String direccionEntrega, Double distanciaKm, String prioridad) {
-        super(idPedido, direccionEntrega, distanciaKm, "Express");
+    public PedidoExpress(String idPedido, String direccionEntrega, String prioridad) {
+        super(idPedido, direccionEntrega, "Express");
         this.prioridad = prioridad;
     }
 
@@ -15,9 +15,8 @@ public class PedidoExpress extends Pedido {
     }
 
     @Override
-    public void asignarRepartidor(String nombreRepartidor) {
-        System.out.println("\nBuscando repartidor más cercano con disponibilidad inmediata... OK");
-        super.asignarRepartidor(nombreRepartidor);
+    public void imprimirDetallesAsignacion() {
+        System.out.println("Buscando repartidor más cercano con disponibilidad inmediata... OK");
         System.out.println("Nivel de prioridad del pedido: " + prioridad);
     }
     public String getPrioridad() {
