@@ -1,4 +1,7 @@
-package com.speedfast;
+package com.speedfast.service;
+
+import com.speedfast.model.Estado;
+import com.speedfast.model.Pedido;
 
 /**
  * Permite registrar cambios de estado de un pedido para el historial.

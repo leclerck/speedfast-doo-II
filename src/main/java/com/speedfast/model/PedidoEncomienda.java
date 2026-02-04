@@ -1,4 +1,4 @@
-package com.speedfast;
+package com.speedfast.model;
 
 public class PedidoEncomienda extends Pedido {
 

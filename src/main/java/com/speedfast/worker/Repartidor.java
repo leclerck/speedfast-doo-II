@@ -1,7 +1,11 @@
-package com.speedfast;
+package com.speedfast.worker;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import com.speedfast.model.Estado;
+import com.speedfast.model.Pedido;
+import com.speedfast.service.RegistroEventos;
 
 public class Repartidor implements Runnable {
     private String nombre;

@@ -1,4 +1,4 @@
-package com.speedfast;
+package com.speedfast.model;
 
 import java.time.ZoneId;
 import java.time.ZonedDateTime;

@@ -1,8 +1,16 @@
-package com.speedfast;
+package com.speedfast.service;
 
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
+
+import com.speedfast.contract.Cancelable;
+import com.speedfast.contract.Despachable;
+import com.speedfast.contract.Rastreable;
+import com.speedfast.model.Estado;
+import com.speedfast.model.EventoPedido;
+import com.speedfast.model.Pedido;
+import com.speedfast.worker.Repartidor;
 
 public class GestorPedidos implements Rastreable, Despachable, Cancelable, RegistroEventos {
     private List<Pedido> pedidos = new ArrayList<>();

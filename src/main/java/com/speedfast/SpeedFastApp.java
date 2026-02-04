@@ -4,11 +4,16 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 
-public class App {
-    public static void main(String[] args) {
-        System.out.println("Bienvenido a SpeedFast!");
-        System.out.println("Realizamos envíos de comida, encomiendas y pedidos express.");
+import com.speedfast.util.StartupBanner;
+import com.speedfast.model.PedidoComida;
+import com.speedfast.model.PedidoEncomienda;
+import com.speedfast.model.PedidoExpress;
+import com.speedfast.service.GestorPedidos;
+import com.speedfast.worker.Repartidor;
 
+public class SpeedFastApp {
+    public static void main(String[] args) {
+        StartupBanner.show();
         GestorPedidos gestorPedidos = new GestorPedidos();
         Repartidor repartidorGG = new Repartidor("Gabriela González", gestorPedidos);
         Repartidor repartidorCL = new Repartidor("Carlos López", gestorPedidos);
