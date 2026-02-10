@@ -2,33 +2,41 @@ package com.speedfast.model;
 
 public abstract class Pedido {
 
-    private String idPedido;
+    private Integer idPedido;
     private String direccionEntrega;
     private Double distanciaKm;
     private String tipoPedido;
-    private Estado estadoPedido;
+    private EstadoPedido estado;
 
 
-    public Pedido(String idPedido, String direccionEntrega, Double distanciaKm, String tipoPedido) {
+    public Pedido(Integer idPedido, String direccionEntrega, Double distanciaKm, String tipoPedido) {
         this.idPedido = idPedido;
         this.direccionEntrega = direccionEntrega;
         this.distanciaKm = distanciaKm;
         this.tipoPedido = tipoPedido;
-        this.estadoPedido = Estado.CREADO;
+        this.estado = EstadoPedido.PENDIENTE;
         System.out.println("--------------------------------");
         System.out.println("Nuevo Pedido registrado: #" + idPedido);
         this.mostrarResumen();
     }
 
-    public Pedido(String idPedido, String direccionEntrega, String tipoPedido) {
+    public Pedido(Integer idPedido, String direccionEntrega, String tipoPedido) {
         this.idPedido = idPedido;
         this.direccionEntrega = direccionEntrega;
-        this.distanciaKm = Math.random() * 5 + 0.1;
+        this.distanciaKm = Math.random() * 2 + 0.1;
         this.tipoPedido = tipoPedido;
-        this.estadoPedido = Estado.CREADO;
+        this.estado = EstadoPedido.PENDIENTE;
         System.out.println("--------------------------------");
-        System.out.println("Nuevo Pedido registrado: #" + idPedido);
-        this.mostrarResumen();
+        System.out.println(">>> Nuevo Pedido registrado: #" + idPedido + " - De tipo " + tipoPedido);
+    }
+
+    /** Constructor interno para subclase PedidoCierre (fin de jornada) */
+    protected Pedido() {
+        this.idPedido = -1;
+        this.direccionEntrega = "";
+        this.distanciaKm = 0.0;
+        this.tipoPedido = "CIERRE";
+        this.estado = EstadoPedido.PENDIENTE;
     }
 
     public abstract Integer calcularTiempoEntrega();
@@ -38,15 +46,15 @@ public abstract class Pedido {
         System.out.println("Resumen del pedido:");
         System.out.println("ID del pedido: " + idPedido);
         System.out.println("Tipo de pedido: " + tipoPedido);
-        System.out.println("Estado del pedido: " + estadoPedido.getNombre());
+        System.out.println("Estado del pedido: " + estado.getNombre());
         System.out.println("Dirección de entrega: " + direccionEntrega);
         System.out.println("Distancia: " + distanciaKm + " km");
     }
 
-    public String getIdPedido() {
+    public Integer getIdPedido() {
         return idPedido;
     }
-    public void setIdPedido(String idPedido) {
+    public void setIdPedido(Integer idPedido) {
         this.idPedido = idPedido;
     }
 
@@ -73,12 +81,18 @@ public abstract class Pedido {
         this.tipoPedido = tipoPedido;
     }
 
-    public Estado getEstadoPedido() {
-        return estadoPedido;
+    public EstadoPedido getEstado() {
+        return estado;
     }
 
-    public void setEstadoPedido(Estado estadoPedido) {
-        this.estadoPedido = estadoPedido;
+    public void setEstado(EstadoPedido estado) {
+        this.estado = estado;
     }
 
+    @Override
+    public String toString() {
+        return "Pedido [idPedido=" + idPedido + ", direccionEntrega=" + direccionEntrega + ", distanciaKm="
+                + distanciaKm + ", tipoPedido=" + tipoPedido + ", estado=" + estado + "]";
+    }
+    
 }

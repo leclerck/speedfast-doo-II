@@ -4,12 +4,12 @@ public class PedidoEncomienda extends Pedido {
 
     private Double peso;
 
-    public PedidoEncomienda(String idPedido, String direccionEntrega, Double distanciaKm, Double peso) {
+    public PedidoEncomienda(Integer idPedido, String direccionEntrega, Double distanciaKm, Double peso) {
         super(idPedido, direccionEntrega, distanciaKm, "Encomienda");
         this.peso = peso;
     }
 
-    public PedidoEncomienda(String idPedido, String direccionEntrega, Double peso) {
+    public PedidoEncomienda(Integer idPedido, String direccionEntrega, Double peso) {
         super(idPedido, direccionEntrega, "Encomienda");
         this.peso = peso;
     }

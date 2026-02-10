@@ -1,15 +1,17 @@
 package com.speedfast.model;
 
-public enum Estado {
-    CREADO("Creado"),
-    ASIGNADO("Asignado"),
-    EN_CAMINO("En camino"),
+/*
+ * Enum que representa los estados posibles de un pedido.
+ */
+public enum EstadoPedido {
+    PENDIENTE("Pendiente"),
+    EN_REPARTO("En reparto"),
     ENTREGADO("Entregado"),
     CANCELADO("Cancelado");
 
     private String nombre;
 
-    Estado(String nombre) {
+    EstadoPedido(String nombre) {
         this.nombre = nombre;
     }
 

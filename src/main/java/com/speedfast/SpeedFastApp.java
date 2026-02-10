@@ -8,56 +8,55 @@ import com.speedfast.util.StartupBanner;
 import com.speedfast.model.PedidoComida;
 import com.speedfast.model.PedidoEncomienda;
 import com.speedfast.model.PedidoExpress;
+import com.speedfast.model.ZonaDeCarga;
 import com.speedfast.service.GestorPedidos;
 import com.speedfast.worker.Repartidor;
 
 public class SpeedFastApp {
     public static void main(String[] args) {
         StartupBanner.show();
+
         GestorPedidos gestorPedidos = new GestorPedidos();
-        Repartidor repartidorGG = new Repartidor("Gabriela González", gestorPedidos);
-        Repartidor repartidorCL = new Repartidor("Carlos López", gestorPedidos);
-        Repartidor repartidorJP = new Repartidor("Juan Pérez", gestorPedidos);
+        ZonaDeCarga zonaDeCarga = new ZonaDeCarga(gestorPedidos);
 
-        PedidoComida pedidoComidaAV = new PedidoComida("1234567890", "Antonio Varas #666", "McDonald's");
-        gestorPedidos.agregarPedido(pedidoComidaAV);
-        gestorPedidos.asignarRepartidor(pedidoComidaAV, repartidorGG);
+        // Creación de los repartidores
+        Repartidor repartidorGG = new Repartidor("Gabriela González", gestorPedidos, zonaDeCarga);
+        Repartidor repartidorCL = new Repartidor("Carlos López", gestorPedidos, zonaDeCarga);
+        Repartidor repartidorJP = new Repartidor("Juan Pérez", gestorPedidos, zonaDeCarga);
 
-        PedidoEncomienda pedidoEncomiendaSerrano = new PedidoEncomienda("1234567891", "Serrano #1105", 10.0);
-        gestorPedidos.agregarPedido(pedidoEncomiendaSerrano);
-        gestorPedidos.asignarRepartidor(pedidoEncomiendaSerrano, repartidorJP);
+        // Creación de los pedidos
+        zonaDeCarga.agregarPedido(new PedidoComida(1234567890, "Antonio Varas #666", "McDonald's"));
+        zonaDeCarga.agregarPedido(new PedidoEncomienda(1234567891, "Serrano #1105", 10.0));
+        zonaDeCarga.agregarPedido(new PedidoExpress(1234567892, "Froilán Roa #7107", "Alta"));
+        zonaDeCarga.agregarPedido(new PedidoEncomienda(1234567893, "Padre Alonso de Ovalle #1586",1.0));
+        zonaDeCarga.agregarPedido(new PedidoComida(1234567894, "Padre Alonso de Ovalle #1586", "Tarragona"));
+        // Señal de fin de jornada para cada repartidor (evita busy-wait en la cola)
+        for (int i = 0; i < 3; i++) {
+            zonaDeCarga.agregarPedidoCierre();
+        }
 
-        PedidoExpress pedidoExpressFroilan = new PedidoExpress("1234567892", "Froilán Roa #7107", "Alta");
-        gestorPedidos.agregarPedido(pedidoExpressFroilan);
-        gestorPedidos.asignarRepartidor(pedidoExpressFroilan, repartidorCL);
-
-        PedidoEncomienda pedidoEncomiendaPAO = new PedidoEncomienda("1234567893", "Padre Alonso de Ovalle #1586",1.0);
-        gestorPedidos.agregarPedido(pedidoEncomiendaPAO);
-        gestorPedidos.asignarRepartidor(pedidoEncomiendaPAO, repartidorCL);
-
-        PedidoExpress pedidoExpressPAO = new PedidoExpress("1234567894", "Padre Alonso de Ovalle #1586","Alta");
-        gestorPedidos.agregarPedido(pedidoExpressPAO);
-        gestorPedidos.asignarRepartidor(pedidoExpressPAO, repartidorJP);
-
-        PedidoComida pedidoComidaPAO = new PedidoComida("1234567895", "Padre Alonso de Ovalle #1586", "Tarragona");
-        gestorPedidos.agregarPedido(pedidoComidaPAO);
-        gestorPedidos.asignarRepartidor(pedidoComidaPAO, repartidorGG);
-
+        // Creación del pool de hilos
         ExecutorService executor = Executors.newFixedThreadPool(3);
         executor.submit(repartidorGG);
         executor.submit(repartidorJP);
         executor.submit(repartidorCL);
         
+        // Cierre del pool de hilos
         executor.shutdown();
         try {
             if (!executor.awaitTermination(60, TimeUnit.SECONDS)) {
-                System.err.println("Hubo un retraso en los repartos del día.");
+                System.err.println("[Alerta] Hubo un retraso en los repartos del día.");
+                executor.shutdownNow();
+                if (!executor.awaitTermination(5, TimeUnit.SECONDS)) {
+                    System.err.println("[Alerta] Algunos repartidores no finalizaron a tiempo.");
+                }
             }
         } catch (InterruptedException e) {
             executor.shutdownNow();
+            Thread.currentThread().interrupt();
         }
 
-        System.out.println("Cierre de operaciones de SpeedFast. Hasta mañana!");
+        System.out.println("==================== Cierre de operaciones de SpeedFast. Hasta mañana! ====================");
 
         gestorPedidos.verHistorial();
 

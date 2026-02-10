@@ -1,54 +1,63 @@
 package com.speedfast.worker;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import com.speedfast.model.Estado;
+import com.speedfast.model.EstadoPedido;
 import com.speedfast.model.Pedido;
+import com.speedfast.model.PedidoCierre;
+import com.speedfast.model.ZonaDeCarga;
 import com.speedfast.service.RegistroEventos;
 
-public class Repartidor implements Runnable {
-    private String nombre;
-    private List<Pedido> pedidos;
-    private RegistroEventos registroEventos;
+/**
+ * Clase que representa un repartidor.
+ * Se encarga de retirar los pedidos de la zona de carga y entregarlos.
+ */
 
-    public Repartidor(String nombre, RegistroEventos registroEventos) {
+public class Repartidor implements Runnable {
+    private final String nombre;
+    private final RegistroEventos registroEventos;
+    private final ZonaDeCarga zonaDeCarga;
+
+    public Repartidor(String nombre, RegistroEventos registroEventos, ZonaDeCarga zonaDeCarga) {
         this.nombre = nombre;
-        this.pedidos = new ArrayList<>();
         this.registroEventos = registroEventos;
+        this.zonaDeCarga = zonaDeCarga;
     }
 
+    /**
+     * Método que se ejecuta cuando se inicia el hilo.
+     * Se encarga de retirar los pedidos de la zona de carga y entregarlos.
+     * Se ejecuta en un bucle hasta que no queden pedidos por retirar o el
+     * repartidor se pierda.
+     */
     @Override
     public void run() {
-        for (Pedido pedido : pedidos) {
-            System.out.println("Repartidor " + nombre + " está recogiendo pedido " + pedido.getIdPedido() + "...");
-            registroEventos.registrarEvento(pedido, Estado.EN_CAMINO);
+        while (true) {
+            Pedido pedido;
+            try {
+                pedido = zonaDeCarga.retirarPedido(nombre);
+            } catch (InterruptedException e) {
+                Thread.currentThread().interrupt();
+                break;
+            }
+            if (pedido instanceof PedidoCierre) {
+                System.out.println("[Zona de carga] Repartidor " + nombre + " marcó el fin de su jornada.");
+                break;
+            }
+            registroEventos.registrarEvento(pedido, EstadoPedido.EN_REPARTO);
+
             try {
                 Thread.sleep(pedido.calcularTiempoEntrega() * 1000);
-                System.out.println("Pedido #" + pedido.getIdPedido() + " entregado exitosamente!");
-                registroEventos.registrarEvento(pedido, Estado.ENTREGADO);
+                registroEventos.registrarEvento(pedido, EstadoPedido.ENTREGADO);
+                System.out.println(">>> Pedido #" + pedido.getIdPedido() + " entregado exitosamente!");
             } catch (InterruptedException e) {
-                e.printStackTrace();
+                System.out.println("[Alerta] Repartidor " + nombre + " se perdió mientras entregaba el pedido "
+                        + pedido.getIdPedido() + ". Finalizando su jornada.");
+                Thread.currentThread().interrupt();
+                break;
             }
         }
     }
 
     public String getNombre() {
         return nombre;
-    }
-    public void setNombre(String nombre) {
-        this.nombre = nombre;
-    }
-    public List<Pedido> getPedidos() {
-        return pedidos;
-    }
-    public void setPedidos(List<Pedido> pedidos) {
-        this.pedidos = pedidos;
-    }
-    public void agregarPedido(Pedido pedido) {
-        this.pedidos.add(pedido);
-    }
-    public void eliminarPedido(Pedido pedido) {
-        this.pedidos.remove(pedido);
     }
 }

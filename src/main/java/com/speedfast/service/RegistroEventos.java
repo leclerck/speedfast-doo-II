@@ -1,6 +1,6 @@
 package com.speedfast.service;
 
-import com.speedfast.model.Estado;
+import com.speedfast.model.EstadoPedido;
 import com.speedfast.model.Pedido;
 
 /**
@@ -8,5 +8,5 @@ import com.speedfast.model.Pedido;
  * Usado por GestorPedidos y por Repartidor para crear EventoPedido.
  */
 public interface RegistroEventos {
-    void registrarEvento(Pedido pedido, Estado estado);
+    void registrarEvento(Pedido pedido, EstadoPedido estado);
 }

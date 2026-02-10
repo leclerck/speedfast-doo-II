@@ -8,10 +8,10 @@ import java.time.ZonedDateTime;
  */
 public class EventoPedido {
     private Pedido pedido;
-    private Estado estado;
+    private EstadoPedido estado;
     private ZonedDateTime fechaHora;
 
-    public EventoPedido(Pedido pedido, Estado estado) {
+    public EventoPedido(Pedido pedido, EstadoPedido estado) {
         this.pedido = pedido;
         this.estado = estado;
         this.fechaHora = ZonedDateTime.now(ZoneId.of("America/Santiago"));
@@ -21,7 +21,7 @@ public class EventoPedido {
         return pedido;
     }
 
-    public Estado getEstado() {
+    public EstadoPedido getEstado() {
         return estado;
     }
 

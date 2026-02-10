@@ -4,7 +4,7 @@ public class PedidoExpress extends Pedido {
 
     private String prioridad;
 
-    public PedidoExpress(String idPedido, String direccionEntrega, String prioridad) {
+    public PedidoExpress(Integer idPedido, String direccionEntrega, String prioridad) {
         super(idPedido, direccionEntrega, "Express");
         this.prioridad = prioridad;
     }

@@ -4,12 +4,12 @@ public class PedidoComida extends Pedido {
 
     private String restaurante;
 
-    public PedidoComida(String idPedido, String direccionEntrega, Double distanciaKm, String restaurante) {  
+    public PedidoComida(Integer idPedido, String direccionEntrega, Double distanciaKm, String restaurante) {  
         super(idPedido, direccionEntrega, distanciaKm, "Comida");
         this.restaurante = restaurante;
     }
 
-    public PedidoComida(String idPedido, String direccionEntrega, String restaurante) {  
+    public PedidoComida(Integer idPedido, String direccionEntrega, String restaurante) {  
         super(idPedido, direccionEntrega, "Comida");
         this.restaurante = restaurante;
     }
